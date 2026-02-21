@@ -23,11 +23,11 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install .
-          pip install .[tests]
+          pip install .[dev,tests]
 
       - name: Build package
         run: |
-          python -m build
+          pyproject-build
 
       - name: Run tests
         run: |
