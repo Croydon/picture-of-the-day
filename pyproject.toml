@@ -35,6 +35,7 @@ tests = [
 ]
 dev = [
   "build>=1.4.0,<2.0.0",
+  "fastapi[standard]>=0.128.2,<1.0.0",
 ]
 
 [project.urls]

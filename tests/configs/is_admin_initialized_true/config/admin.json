@@ -1,0 +1,7 @@
+{
+    "nc_url": "https://cloud.example.com/",
+    "nc_username": "admin",
+    "nc_accesstoken": "sometoken",
+    "admin_username": "admin",
+    "admin_password": "admin"
+}
