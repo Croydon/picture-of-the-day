@@ -8,15 +8,6 @@ import picture_of_the_day.config as config
 logger = logging.getLogger("picture-of-the-day")
 logger.setLevel(logging.DEBUG)
 
-def update_album_photos(album_id):
-    actual_photos = nc_handler.nc_get_album_photos(album_id)
-
-    config.update_album_photos_config(album_id=album_id, actual_photos=actual_photos)
-
-def get_album(album_id):
-    return None
-
-
 def get_pod_photoid(album_id, day):
     if day in config.config["albums"][album_id]["pods"]:
         return config.config["albums"][album_id]["pods"][day]["photo_id"]
@@ -29,6 +20,14 @@ def get_pod_set_by(album_id, day):
 
 def set_pod(album_id, day, photo_id, set_by):
     config.set_pod(album_id, day, photo_id, set_by)
+
+def update_album_photos(album_id):
+    actual_photos = nc_handler.nc_get_album_photos(album_id)
+
+    config.update_album_photos_config(album_id=album_id, actual_photos=actual_photos)
+
+def get_album_photos(album_id):
+    return config.get_album_photos(album_id)
 
 def get_unused_photos(album_id):
     return config.get_unused_photos(album_id)

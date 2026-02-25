@@ -102,6 +102,9 @@ def set_pod(album_id, day, photo_id, set_by):
     save_config()
 
 
+def get_album_photos(album_id):
+    return config["albums"][album_id]["photos"]
+
 def get_unused_photos(album_id):
     used_photos = set()
     for pod_day in config["albums"][album_id]["pods"]:

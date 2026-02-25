@@ -47,9 +47,9 @@ def test_remove_photo_from_album_success(monkeypatch):
     config.autosave_configs = False
 
     pod_id = logic.get_pod_photoid("pod-test-album", "4444-04-04")
-    assert pod_id == "7.jpg"
+    assert pod_id == "far_future_date.jpg"
 
-    config._remove_photo_from_album_config("pod-test-album", "7.jpg")
+    config._remove_photo_from_album_config("pod-test-album", "far_future_date.jpg")
 
     pod_id = logic.get_pod_photoid("pod-test-album", "4444-04-04")
     assert pod_id == None
@@ -67,6 +67,18 @@ def test_remove_photo_from_album_prevent_keep_history(monkeypatch):
 
     pod_id = logic.get_pod_photoid("pod-test-album", "0888-01-01")
     assert pod_id == "0.jpg"
+
+
+def test_get_album_photos(monkeypatch):
+    monkeypatch.chdir(os.path.join("tests", "configs", "is_admin_initialized_true"))
+    config.load_core_config(ignore_env=True)
+    config.autosave_configs = False
+
+    photos = logic.get_album_photos("pod-test-album")
+
+    assert "actual_photo.jpg" in photos
+    assert "1.jpg" in photos
+    assert 13 == len(photos)
 
 
 def test_get_unused_photos(monkeypatch):
