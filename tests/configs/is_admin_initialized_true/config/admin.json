@@ -5,5 +5,36 @@
         "nc_accesstoken": "sometoken",
         "admin_username": "admin",
         "admin_password": "admin"
+    },
+    "albums": {
+        "pod-test-album/": {
+            "pods": {
+                "0888-01-01": {"photo_id": "0.jpg", "set_by": "admin"},
+                "1234-05-06": {"photo_id": "deleted_by_now.jpg", "set_by": "random"},
+                "2026-02-25": {"photo_id": "1.jpg", "set_by": "admin"},
+                "2026-02-26": {"photo_id": "2.jpg", "set_by": "admin"},
+                "2026-02-27": {"photo_id": "3.jpg", "set_by": "admin"},
+                "2026-02-28": {"photo_id": "4.jpg", "set_by": "random"},
+                "2026-02-29": {"photo_id": "5.jpg", "set_by": "random"},
+                "2026-02-30": {"photo_id": "6.jpg", "set_by": "admin"},
+                "4444-04-04": {"photo_id": "7.jpg", "set_by": "admin"}
+            },
+            "access_token": "superdupersecrettoken"
+        },
+        "photos": [
+                "0.jpg",
+                "1.jpg",
+                "2.jpg",
+                "3.jpg",
+                "4.jpg",
+                "5.jpg",
+                "6.jpg",
+                "7.jpg",
+                "newphoto.jpg",
+                "newdate.jpg"
+        ],
+        "deleted_photos_that_were_deployed": [
+                "deleted_by_now.jpg"
+        ]
     }
 }

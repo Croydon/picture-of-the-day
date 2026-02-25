@@ -2,9 +2,6 @@ import json
 import os
 import logging
 
-from datetime import datetime
-from zoneinfo import ZoneInfo
-
 import picture_of_the_day.nc_handler as nc_handler
 import picture_of_the_day.config as config
 
@@ -19,5 +16,16 @@ def update_album_photos(album_id):
 def get_album(album_id):
     return None
 
-def set_photo_of_day(album_id, photo_id):
+
+def get_pod_photoid(album_id, day):
+    if day in config.config["albums"][album_id]["pods"]:
+        return config.config["albums"][album_id]["pods"][day]["photo_id"]
     return None
+
+def get_pod_set_by(album_id, day):
+    if day in config.config["albums"][album_id]["pods"]:
+        return config.config["albums"][album_id]["pods"][day]["set_by"]
+    return None
+
+def set_pod(album_id, day, photo_id, set_by):
+    config.set_pod(album_id, day, photo_id, set_by)
