@@ -35,18 +35,18 @@ def test_nc_get_album_photos():
     response = nc_handler.nc_get_album_photos("pod-test-album")
     print(response)
     search_for = ["cat_peeking", "cat_face_closeup", "young_cat", "moon"]
-    cat_peeking_id = None
+    download_photo_id = None
     for image_id in response:
         for search_term in search_for:
             if search_term in image_id:
                 search_for.remove(search_term)
                 if search_term == "cat_peeking":
-                    cat_peeking_id = image_id
+                    download_photo_id = image_id
     assert [] == search_for
 
-    cat_seeking_path = nc_handler.nc_get_photo("pod-test-album", cat_peeking_id)
+    downloaded_path = nc_handler.nc_get_photo("pod-test-album", download_photo_id)
 
-    with open(cat_seeking_path, "rb") as f:
+    with open(downloaded_path, "rb") as f:
         digest = hashlib.file_digest(f, "sha256")
 
     assert "744455716ad49d53c2f0037db39f667fc3a60b338df7e6a2569ec3ba47b69dab" == digest.hexdigest()

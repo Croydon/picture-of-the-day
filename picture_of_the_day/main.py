@@ -3,7 +3,6 @@ import logging
 
 from picture_of_the_day.api import run_server
 
-
 logger = logging.getLogger("picture-of-the-day")
 logger.setLevel(logging.INFO)
 logger.addHandler(logging.StreamHandler())
@@ -17,4 +16,5 @@ def main():
     args = parser.parse_args()
 
     if args.command == "run":
+
         run_server(args)

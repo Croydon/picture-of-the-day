@@ -35,3 +35,15 @@ def test_api_is_admin_initialized_true(monkeypatch):
     data = response.json()
     assert "initialized" in response.json()
     assert data["initialized"] == True
+
+def test_api_get_pod_photo_bytes(monkeypatch):
+    monkeypatch.chdir(os.path.join("tests", "configs", "is_admin_initialized_true"))
+    config.load_core_config(ignore_env=True)
+    config.autosave_configs = False
+
+    response = client.get("/api/album/pod-test-album/auth_TOOD/photo/2026-03-07")
+    assert response.status_code == 200
+
+    checksum = hashlib.new("sha256", response.content).hexdigest()
+    
+    assert "ca85488124e60afb8078dc44e9693b934f72c61c21be0714954da2c27409caad" == checksum

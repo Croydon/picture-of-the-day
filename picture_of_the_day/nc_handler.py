@@ -29,10 +29,10 @@ def nc_is_instance_reachable(core_config=None, caching=True) -> bool:
         client = webdavclient({"webdav_hostname": core_config["nc_url"], "webdav_login": core_config["nc_username"], "webdav_password": core_config["nc_accesstoken"]})
 
         if client.check(f"/remote.php/dav/photos/{core_config["nc_username"]}/albums/"):
-            if client.list(f"/remote.php/dav/photos/{core_config["nc_username"]}/albums/"):
-                _nc_instance_reachable = True
-                _client = client
-                return True
+            #if client.list(f"/remote.php/dav/photos/{core_config["nc_username"]}/albums/"):
+            _nc_instance_reachable = True
+            _client = client
+            return True
     except Exception as e:
         _nc_instance_reachable = False
         return False

@@ -97,7 +97,7 @@ def test_get_photo_bytes(monkeypatch):
     config.load_core_config(ignore_env=True)
     config.autosave_configs = False
 
-    photo_bytes = logic.get_photo_bytes("pod-test-album", "actual_existing_photo.jpg")
+    photo_bytes, mime_type = logic.get_photo_bytes("pod-test-album", "actual_existing_photo.jpg")
     checksum = hashlib.new("sha256", photo_bytes).hexdigest()
     
     assert "ca85488124e60afb8078dc44e9693b934f72c61c21be0714954da2c27409caad" == checksum
@@ -107,7 +107,7 @@ def test_get_pod_photo_bytes_existing(monkeypatch):
     config.load_core_config(ignore_env=True)
     config.autosave_configs = False
 
-    photo_bytes = logic.get_pod_photo_bytes("pod-test-album", "2026-03-07")
+    photo_bytes, mime_type = logic.get_pod_photo_bytes("pod-test-album", "2026-03-07")
     checksum = hashlib.new("sha256", photo_bytes).hexdigest()
     
     assert "ca85488124e60afb8078dc44e9693b934f72c61c21be0714954da2c27409caad" == checksum
@@ -117,6 +117,6 @@ def test_get_pod_photo_bytes_nonexisting(monkeypatch):
     config.load_core_config(ignore_env=True)
     config.autosave_configs = False
 
-    photo_bytes = logic.get_pod_photo_bytes("pod-test-album", "0987-06-05")
+    photo_bytes, mime_type = logic.get_pod_photo_bytes("pod-test-album", "0987-06-05")
 
     assert None == photo_bytes
