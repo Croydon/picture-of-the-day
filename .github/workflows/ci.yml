@@ -36,8 +36,8 @@ jobs:
           POD_NC_URL: ${{ secrets.POD_NC_URL }}
           POD_NC_USERNAME: ${{ secrets.POD_NC_USERNAME }}
           POD_NC_ACCESSTOKEN: ${{ secrets.POD_NC_ACCESSTOKEN }}
-          POD_ADMIN_USERNAME: ${{ secrets.POD_ADMIN_USERNAME }}
-          POD_ADMIN_PASSWORD: ${{ secrets.POD_ADMIN_PASSWORD }}
+          POD_ADMIN_USERNAME: ${{ vars.POD_ADMIN_USERNAME }}
+          POD_ADMIN_PASSWORD: ${{ vars.POD_ADMIN_PASSWORD }}
 
 
   build_and_deploy:
