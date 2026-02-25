@@ -2,8 +2,10 @@
 requires = ["setuptools>=82"]
 build-backend = "setuptools.build_meta"
 
-[tool.setuptools]
-py-modules = ["picture_of_the_day"]
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["picture_of_the_day*"]
+exclude = ["tests*", "config*"]
 
 [project]
 name = "picture-of-the-day"
