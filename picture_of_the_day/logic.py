@@ -13,6 +13,11 @@ def get_pod_photoid(album_id, day):
         return config.config["albums"][album_id]["pods"][day]["photo_id"]
     return None
 
+def get_pod_photo_bytes(album_id, day):
+    if day in config.config["albums"][album_id]["pods"]:
+        return get_photo_bytes(album_id, get_pod_photoid(album_id, day))
+    return None
+
 def get_pod_set_by(album_id, day):
     if day in config.config["albums"][album_id]["pods"]:
         return config.config["albums"][album_id]["pods"][day]["set_by"]
@@ -31,3 +36,17 @@ def get_album_photos(album_id):
 
 def get_unused_photos(album_id):
     return config.get_unused_photos(album_id)
+
+def get_local_photo_path(album_id, photo_id):
+    return f"cache/{album_id}/{photo_id}"
+
+def get_photo_bytes(album_id, photo_id):
+    # TODO: Improve cache logic
+    photo_path = get_local_photo_path(album_id, photo_id)
+    if not os.path.exists(photo_path):
+        __photo_path = nc_handler.nc_get_photo(album_id, photo_id)
+
+    photo_bytes = None
+    with open(photo_path, "rb") as f:
+        photo_bytes = f.read()
+    return photo_bytes

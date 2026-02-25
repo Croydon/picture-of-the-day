@@ -91,3 +91,32 @@ def test_get_unused_photos(monkeypatch):
     assert "not_used_yet_1.jpg" in unused_photos
     assert "not_used_yet_2.jpg" in unused_photos
     assert 4 == len(unused_photos)
+
+def test_get_photo_bytes(monkeypatch):
+    monkeypatch.chdir(os.path.join("tests", "configs", "is_admin_initialized_true"))
+    config.load_core_config(ignore_env=True)
+    config.autosave_configs = False
+
+    photo_bytes = logic.get_photo_bytes("pod-test-album", "actual_existing_photo.jpg")
+    checksum = hashlib.new("sha256", photo_bytes).hexdigest()
+    
+    assert "ca85488124e60afb8078dc44e9693b934f72c61c21be0714954da2c27409caad" == checksum
+
+def test_get_pod_photo_bytes_existing(monkeypatch):
+    monkeypatch.chdir(os.path.join("tests", "configs", "is_admin_initialized_true"))
+    config.load_core_config(ignore_env=True)
+    config.autosave_configs = False
+
+    photo_bytes = logic.get_pod_photo_bytes("pod-test-album", "2026-03-07")
+    checksum = hashlib.new("sha256", photo_bytes).hexdigest()
+    
+    assert "ca85488124e60afb8078dc44e9693b934f72c61c21be0714954da2c27409caad" == checksum
+
+def test_get_pod_photo_bytes_nonexisting(monkeypatch):
+    monkeypatch.chdir(os.path.join("tests", "configs", "is_admin_initialized_true"))
+    config.load_core_config(ignore_env=True)
+    config.autosave_configs = False
+
+    photo_bytes = logic.get_pod_photo_bytes("pod-test-album", "0987-06-05")
+
+    assert None == photo_bytes

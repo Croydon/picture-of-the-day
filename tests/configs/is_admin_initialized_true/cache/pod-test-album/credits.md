@@ -9,4 +9,4 @@ All pictures are CC-0 licensed.
   * stocksnap_mountain.jpg: Photo by Free Nature Stock on StockSnap https://stocksnap.io/photo/winter-mountain-9FQTWA83PP
   * stocksnap_moon.jpg: Photo by Free Nature Stock on StockSnap https://stocksnap.io/photo/moon-craters-URRYFAOY7E
   * actual_photo_original.jpg: Photo by Steve Johnson on StockSnap https://stocksnap.io/photo/black-camera-ZE94OW561P
-    * actual_photo.jpg: Downsized to 800x400 and reduced in quality
+    * actual_photo.jpg: Downsized to 800x400 and reduced in quality; manipulated photo creation time
