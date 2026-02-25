@@ -18,6 +18,9 @@ def test_read_main():
 
 def test_is_admin_initialized_false(monkeypatch):
     monkeypatch.chdir(os.path.join("tests", "configs", "empty"))
+    monkeypatch.delenv("POD_NC_URL", raising=False)
+    monkeypatch.delenv("POD_USERNAME", raising=False)
+    monkeypatch.delenv("POD_ACCESSTOKEN", raising=False)
 
     response = client.get("/api/admin/initialized")
     assert response.status_code == 200
