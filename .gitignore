@@ -1,5 +1,8 @@
 # Project-specific
 picture_of_the_day/config/
+config/
+admin.json
+!tests/configs/*/admin.json
 
 
 # Byte-compiled / optimized / DLL files
