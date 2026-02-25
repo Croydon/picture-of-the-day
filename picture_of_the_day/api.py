@@ -15,11 +15,6 @@ import picture_of_the_day.config as config
 api = FastAPI()
 logger = logging.getLogger("picture-of-the-day")
 
-# @api.get("/")
-# def read_root(request: Request):
-#     user_agent = request.headers.get('user-agent')
-#     return {"Hello": "World", "User-Agent": user_agent, "pwd": os.getcwd()}
-
 @api.get("/api/admin/initialized")
 def is_admin_initialized():
     return {"initialized": config.is_admin_initialized(), "path": os.path.abspath(os.path.join(config.CONFIGDIR, "admin.json"))}
