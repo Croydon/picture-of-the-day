@@ -5,7 +5,7 @@ import os
 import uvicorn
 
 from fastapi import FastAPI, Request, Depends
-from fastapi.responses import Response, StreamingResponse
+from fastapi.responses import Response
 from fastapi.staticfiles import StaticFiles
 
 import picture_of_the_day.logic as logic
@@ -34,9 +34,9 @@ def set_day(request: Request, album_id: int):
     return {}
 
 @api.get("/api/album/{album_id}/{auth}/photo/today")
-def get_pod(request: Request, album_id: int):
+def get_pod(request: Request, album_id: str, auth: str):
     photo_bytes, mime_type = logic.get_pod_photo_bytes(album_id)
-    return StreamingResponse(photo_bytes, media_type=mime_type)
+    return Response(photo_bytes, media_type=mime_type)
 
 # api/album/pod-test-album/auth/photo/2026-03-07
 @api.get("/api/album/{album_id}/{auth}/photo/{day}")
