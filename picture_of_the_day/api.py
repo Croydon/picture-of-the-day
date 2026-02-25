@@ -9,6 +9,7 @@ from fastapi.responses import Response
 from fastapi.staticfiles import StaticFiles
 
 import picture_of_the_day.logic as logic
+import picture_of_the_day.config as config
 
 
 api = FastAPI()
@@ -21,7 +22,7 @@ logger = logging.getLogger("picture-of-the-day")
 
 @api.get("/api/admin/initialized")
 def is_admin_initialized():
-    return {"initialized": logic.is_admin_initialized(), "path": os.path.abspath(os.path.join(logic.CONFIGDIR, "admin.json"))}
+    return {"initialized": config.is_admin_initialized(), "path": os.path.abspath(os.path.join(config.CONFIGDIR, "admin.json"))}
 
 @api.get("api/admin/albums")
 def get_albums(request: Request):

@@ -2,29 +2,19 @@ import json
 import os
 import logging
 
+from datetime import datetime
+from zoneinfo import ZoneInfo
+
+import picture_of_the_day.nc_handler as nc_handler
+import picture_of_the_day.config as config
+
 logger = logging.getLogger("picture-of-the-day")
 logger.setLevel(logging.DEBUG)
 
-CONFIGDIR = os.environ.get("POD_CONFIG_DIR", os.path.join("config"))
+def update_album_photos(album_id):
+    actual_photos = nc_handler.nc_get_album_photos(album_id)
 
-config_admin = {}
-
-
-def is_admin_initialized():
-    if not os.path.exists(os.path.join(CONFIGDIR, "admin.json")):
-        return False
-    with open(os.path.join(CONFIGDIR, "admin.json"), "r") as f:
-        config_admin = json.load(f)
-        if not all(k in config_admin for k in ["nc_url", "nc_username", "nc_accesstoken", "admin_username", "admin_password"]):
-            return False
-        return True
-
-
-def get_nc_albums():
-    return None
-
-def get_nc_album(album_id):
-    return None
+    config.update_album_photos_config(album_id=album_id, actual_photos=actual_photos)
 
 def get_album(album_id):
     return None
