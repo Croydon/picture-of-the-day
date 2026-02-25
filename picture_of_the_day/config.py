@@ -12,9 +12,9 @@ config = _config_init.copy()
 
 # pods: ["YYYY-MM-DD": {photo_id: "photo_id", set_by: "admin|algo"}, ..]
 
-def load_core_config():
+def load_core_config(ignore_env=False):
     global config;
-    if all(k in os.environ for k in ["POD_NC_URL", "POD_NC_USERNAME", "POD_NC_ACCESSTOKEN", "POD_ADMIN_USERNAME", "POD_ADMIN_PASSWORD"]):
+    if not ignore_env and all(k in os.environ for k in ["POD_NC_URL", "POD_NC_USERNAME", "POD_NC_ACCESSTOKEN", "POD_ADMIN_USERNAME", "POD_ADMIN_PASSWORD"]):
         config["core"] = {
             "nc_url": os.environ["POD_NC_URL"],
             "nc_username": os.environ["POD_NC_USERNAME"],

@@ -87,7 +87,7 @@ def test_nc_get_album_photos():
 ###
 def test_get_pod(monkeypatch):
     monkeypatch.chdir(os.path.join("tests", "configs", "is_admin_initialized_true"))
-    config.load_core_config()
+    config.load_core_config(ignore_env=True)
     config.autosave_configs = False
 
     pod_id = logic.get_pod_photoid("pod-test-album", "2026-02-26")
@@ -97,7 +97,7 @@ def test_get_pod(monkeypatch):
 
 def test_set_pod(monkeypatch):
     monkeypatch.chdir(os.path.join("tests", "configs", "is_admin_initialized_true"))
-    config.load_core_config()
+    config.load_core_config(ignore_env=True)
     config.autosave_configs = False
 
     logic.set_pod("pod-test-album", "2026-02-26", "newphoto.jpg", "admin")
@@ -116,7 +116,7 @@ def test_set_pod(monkeypatch):
 
 def test_remove_photo_from_album_success(monkeypatch):
     monkeypatch.chdir(os.path.join("tests", "configs", "is_admin_initialized_true"))
-    config.load_core_config()
+    config.load_core_config(ignore_env=True)
     config.autosave_configs = False
 
     pod_id = logic.get_pod_photoid("pod-test-album", "4444-04-04")
@@ -130,7 +130,7 @@ def test_remove_photo_from_album_success(monkeypatch):
 
 def test_remove_photo_from_album_prevent_keep_history(monkeypatch):
     monkeypatch.chdir(os.path.join("tests", "configs", "is_admin_initialized_true"))
-    config.load_core_config()
+    config.load_core_config(ignore_env=True)
     config.autosave_configs = False
 
     pod_id = logic.get_pod_photoid("pod-test-album", "0888-01-01")
@@ -144,7 +144,7 @@ def test_remove_photo_from_album_prevent_keep_history(monkeypatch):
 
 def test_get_unused_photos(monkeypatch):
     monkeypatch.chdir(os.path.join("tests", "configs", "is_admin_initialized_true"))
-    config.load_core_config()
+    config.load_core_config(ignore_env=True)
     config.autosave_configs = False
 
     unused_photos = logic.get_unused_photos("pod-test-album")
