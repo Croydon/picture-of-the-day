@@ -76,7 +76,7 @@ def test_get_album_photos(monkeypatch):
 
     photos = logic.get_album_photos("pod-test-album")
 
-    assert "actual_photo.jpg" in photos
+    assert "actual_existing_photo.jpg" in photos
     assert "1.jpg" in photos
     assert 13 == len(photos)
 

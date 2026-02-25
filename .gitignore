@@ -4,6 +4,7 @@ config/
 admin.json
 !tests/configs/*/admin.json
 cache/
+!tests/configs/*/cache/
 
 
 # Byte-compiled / optimized / DLL files

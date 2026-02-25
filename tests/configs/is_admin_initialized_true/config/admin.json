@@ -18,7 +18,7 @@
                 "2026-02-28": {"photo_id": "4.jpg", "set_by": "random"},
                 "2026-02-29": {"photo_id": "5.jpg", "set_by": "random"},
                 "2026-02-30": {"photo_id": "6.jpg", "set_by": "admin"},
-                "2026-03-07": {"photo_id": "actual_photo.jpg", "set_by": "admin"},
+                "2026-03-07": {"photo_id": "actual_existing_photo.jpg", "set_by": "admin"},
                 "4444-04-04": {"photo_id": "far_future_date.jpg", "set_by": "admin"}
             },
             "photos": [
