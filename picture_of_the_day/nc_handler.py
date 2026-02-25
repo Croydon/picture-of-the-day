@@ -1,3 +1,5 @@
+import os
+
 from webdav3.client import Client as webdavclient
 
 import picture_of_the_day.logic as logic
@@ -37,11 +39,20 @@ def nc_is_instance_reachable(core_config=None, caching=True) -> bool:
 
 def nc_get_albums():
     albums = _client.list(f"/remote.php/dav/photos/{config.config["core"]["nc_username"]}/albums/")
-    return albums
+    sanitized_albums = []
+    for album in albums:
+        if album.endswith("/"):
+            sanitized_albums.append(album.rstrip("/"))
+    return sanitized_albums
 
 def nc_get_album_photos(album_id):
     photos = _client.list(f"/remote.php/dav/photos/{config.config["core"]["nc_username"]}/albums/{album_id}")
     return photos
 
-def nc_get_photo(photo_id):
-    return None
+def nc_get_photo(album_id, photo_id):
+    if not os.path.exists(f"cache/{album_id}"):
+        os.makedirs(f"cache/{album_id}")
+    photo_path = f"cache/{album_id}/{photo_id}"
+    
+    _client.download_sync(f"/remote.php/dav/photos/{config.config["core"]["nc_username"]}/albums/{album_id}/{photo_id}", photo_path)
+    return photo_path

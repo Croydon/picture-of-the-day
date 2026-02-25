@@ -7,7 +7,8 @@
         "admin_password": "admin"
     },
     "albums": {
-        "pod-test-album/": {
+        "pod-test-album": {
+            "access_token": "superdupersecrettoken",
             "pods": {
                 "0888-01-01": {"photo_id": "0.jpg", "set_by": "admin"},
                 "1234-05-06": {"photo_id": "deleted_by_now.jpg", "set_by": "random"},
@@ -19,22 +20,23 @@
                 "2026-02-30": {"photo_id": "6.jpg", "set_by": "admin"},
                 "4444-04-04": {"photo_id": "7.jpg", "set_by": "admin"}
             },
-            "access_token": "superdupersecrettoken"
-        },
-        "photos": [
+            "photos": [
                 "0.jpg",
                 "1.jpg",
                 "2.jpg",
                 "3.jpg",
+                "not_used_yet_2.jpg",
                 "4.jpg",
                 "5.jpg",
                 "6.jpg",
                 "7.jpg",
                 "newphoto.jpg",
-                "newdate.jpg"
-        ],
-        "deleted_photos_that_were_deployed": [
-                "deleted_by_now.jpg"
-        ]
+                "newdate.jpg",
+                "not_used_yet_1.jpg"
+            ],
+            "deleted_photos_that_were_deployed": [
+                    "deleted_by_now.jpg"
+            ]
+        }
     }
 }

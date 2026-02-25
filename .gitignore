@@ -3,6 +3,7 @@ picture_of_the_day/config/
 config/
 admin.json
 !tests/configs/*/admin.json
+cache/
 
 
 # Byte-compiled / optimized / DLL files

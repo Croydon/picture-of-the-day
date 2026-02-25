@@ -29,3 +29,6 @@ def get_pod_set_by(album_id, day):
 
 def set_pod(album_id, day, photo_id, set_by):
     config.set_pod(album_id, day, photo_id, set_by)
+
+def get_unused_photos(album_id):
+    return config.get_unused_photos(album_id)
