@@ -19,8 +19,8 @@ def test_read_main():
 def test_is_admin_initialized_false(monkeypatch):
     monkeypatch.chdir(os.path.join("tests", "configs", "empty"))
     monkeypatch.delenv("POD_NC_URL", raising=False)
-    monkeypatch.delenv("POD_USERNAME", raising=False)
-    monkeypatch.delenv("POD_ACCESSTOKEN", raising=False)
+    monkeypatch.delenv("POD_NC_USERNAME", raising=False)
+    monkeypatch.delenv("POD_NC_ACCESSTOKEN", raising=False)
 
     response = client.get("/api/admin/initialized")
     assert response.status_code == 200
@@ -37,10 +37,14 @@ def test_is_admin_initialized_true(monkeypatch):
     assert "initialized" in response.json()
     assert data["initialized"] == True
 
+import json 
+
 def test_nc_is_instance_reachable_false(monkeypatch):
     monkeypatch.setenv("POD_NC_URL", "https://localhost:12345/nonexistent")
-    monkeypatch.setenv("POD_USERNAME", "nonexistent")
-    monkeypatch.setenv("POD_ACCESSTOKEN", "nonexistent")
+    monkeypatch.setenv("POD_NC_USERNAME", "nonexistent")
+    monkeypatch.setenv("POD_NC_ACCESSTOKEN", "nonexistent")
+    monkeypatch.setenv("POD_ADMIN_USERNAME", "nonexistent")
+    monkeypatch.setenv("POD_ADMIN_PASSWORD", "nonexistent")
     assert nc_handler.nc_is_instance_reachable(caching=False) == False
 
 ###
@@ -48,9 +52,6 @@ def test_nc_is_instance_reachable_false(monkeypatch):
 ###
 @pytest.mark.skipif(not config.is_admin_initialized(), reason="core config is not set")
 def test_nc_is_instance_reachable_true():
-    # config loads are saved between tests run, we need to get back to an actual config
-    config.load_core_config()
-
     assert nc_handler.nc_is_instance_reachable(caching=False) == True
 
 @pytest.mark.skipif(not nc_handler.nc_is_instance_reachable(), reason="NC instance is unavailable")

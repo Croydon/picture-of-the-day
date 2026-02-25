@@ -43,5 +43,5 @@ def nc_get_album_photos(album_id):
     photos = _client.list(f"/remote.php/dav/photos/{config.config["core"]["nc_username"]}/albums/{album_id}")
     return photos
 
-def nc_get_picture(photo_id):
+def nc_get_photo(photo_id):
     return None
