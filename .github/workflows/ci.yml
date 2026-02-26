@@ -43,6 +43,9 @@ jobs:
           POD_ADMIN_USERNAME: ${{ vars.POD_ADMIN_USERNAME }}
           POD_ADMIN_PASSWORD: ${{ vars.POD_ADMIN_PASSWORD }}
 
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
       - name: "Docker: Set up Docker Buildx"
         uses: docker/setup-buildx-action@v3
 
@@ -51,6 +54,7 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
+          platforms: linux/amd64,linux/arm64
           push: false
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:dev
 
@@ -101,6 +105,9 @@ jobs:
           print-hash: true
           verbose: true
 
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
       - name: "Docker: Set up Docker Buildx"
         uses: docker/setup-buildx-action@v3
 
@@ -126,6 +133,7 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
+          platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
