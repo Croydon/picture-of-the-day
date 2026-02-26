@@ -22,6 +22,8 @@ def load_core_config(ignore_env=False):
             "admin_username": os.environ["POD_ADMIN_USERNAME"],
             "admin_password": os.environ["POD_ADMIN_PASSWORD"]
         }
+        if "POD_TIMEZONE" in os.environ:
+            config["core"]["timezone"] = os.environ["POD_TIMEZONE"]
     elif os.path.exists(os.path.join(CONFIGDIR, "admin.json")):
         with open(os.path.join(CONFIGDIR, "admin.json"), "r") as f:
             config_file = json.load(f)
