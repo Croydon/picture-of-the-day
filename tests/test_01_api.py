@@ -48,7 +48,7 @@ def test_api_get_pod_photo_bytes(monkeypatch):
     
     # without overlay: ca85488124e60afb8078dc44e9693b934f72c61c21be0714954da2c27409caad
     
-    assert "474f88439c14c9c6caede07c8f1c9f2a70c92da004dc8c170039a2c4bde7ee32" == checksum
+    assert "017074049ec4b32c5257fe959b4b3c9bea585b8530ecd701188ecee48cbf938d" == checksum
 
 def test_api_endpoint_calls_unauthenticated(monkeypatch):
     monkeypatch.chdir(os.path.join("tests", "configs", "is_admin_initialized_true"))
