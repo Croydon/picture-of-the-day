@@ -2,6 +2,12 @@ import json
 import os
 import logging
 import random 
+import io
+
+import exifread
+
+from datetime import datetime
+from PIL import Image, ImageDraw, ImageFont
 
 import picture_of_the_day.nc_handler as nc_handler
 import picture_of_the_day.config as config
@@ -28,12 +34,63 @@ def get_pod_photoid(album_id, day=None):
         
     return config.config["albums"][album_id]["pods"][day]["photo_id"]
 
-def get_pod_photo_bytes(album_id, day=None) -> [bytes, str]:
+def write_on_photo_bytes(photo_bytes, text: str, mime_type: str):
+    fh = io.BytesIO(photo_bytes)
+    fh.seek(0)
+
+    img = Image.open(fh).convert("RGB")
+    draw = ImageDraw.Draw(img)
+
+    font_path = os.path.join("picture_of_the_day", "ui", "assets", "fonts", "noto_sans", "NotoSans-Variable.ttf")
+
+    # Try to scale font size reasonable
+    percentage_of_photo_scale = 0.04
+    min_px = 10
+    font_size = max(min_px, int(min(img.size) * percentage_of_photo_scale))
+
+    try:
+        font = ImageFont.truetype(font_path, font_size)
+    except OSError:
+        font = ImageFont.load_default(font_size)
+
+    # Measure text
+    left, top, right, bottom = draw.textbbox((0, 0), text, font=font)
+    text_w = right - left
+    text_h = bottom - top
+
+    # Bottom-left position
+    x = 50
+    y = img.height - text_h - 70
+
+    # Outline around text
+    draw.text((x - 4, y), text, font=font, fill="black")
+    draw.text((x + 4, y), text, font=font, fill="black")
+    draw.text((x, y - 4), text, font=font, fill="black")
+    draw.text((x, y + 4), text, font=font, fill="black")
+
+    # Text itself
+    draw.text((x, y), text, font=font, fill="white")
+
+    out = io.BytesIO()
+    save_options = {"format": "JPEG"}
+    if "jpeg" in mime_type:
+        save_options["quality"] = 100
+
+    img.save(out, **save_options)
+    return out.getvalue()
+
+def get_pod_photo_bytes(album_id, day=None, overlay=True) -> [bytes, str]:
     if day is None:
         day = config.get_current_day()
     photoid = get_pod_photoid(album_id, day)
     if photoid is not None:
-        return get_photo_bytes(album_id, photoid)
+        photo_bytes, mime_type = get_photo_bytes(album_id, photoid)
+        if overlay:
+            photo_creationtime = get_photo_exif_creationtime(photo_bytes)
+            print(photo_creationtime)
+            if photo_creationtime is not None:
+                photo_bytes = write_on_photo_bytes(photo_bytes, photo_creationtime.strftime("%d.%m.%Y"), mime_type)
+        return photo_bytes, mime_type
     return None, None
 
 def get_pod_set_by(album_id, day):
@@ -85,11 +142,38 @@ def get_random_photoid(album_id) -> str:
 def get_local_photo_path(album_id, photo_id):
     return f"cache/{album_id}/{photo_id}"
 
+def _parse_exif_times(exif_time: str):
+    exif_time = exif_time.strip()
+    try:
+        return datetime.strptime(exif_time, "%Y:%m:%d %H:%M:%S")
+    except ValueError:
+        pass
+
+    try:
+        return datetime.strptime(exif_time[:19], "%Y:%m:%d %H:%M:%S")
+    except ValueError:
+        return None
+
+def get_photo_exif_creationtime(photo_bytes):
+    # TODO: Handle EXIF OffsetTime if existing
+    fh = io.BytesIO(photo_bytes)
+    fh.seek(0)
+    tags = exifread.process_file(fh, details=False)
+    # print(tags)
+    for tag in ["EXIF DateTimeOriginal", "DateTimeOriginal", "EXIF SubSecTimeOriginal", "EXIF DateTimeDigitized", "DateTimeDigitized", "EXIF SubSecTimeDigitized"]:
+        # consider "DateTime" , but this is probably just file creation time
+        if tag in tags:
+            print(str(tags[tag]))
+            return _parse_exif_times(str(tags[tag]))
+
+    return None
+    
+
 def get_photo_mimetype(album_id, photo_id):
     # keep album_id even when unused currently
     # maybe this should be smarter in the future
     file_ending = photo_id.rsplit(".", 1)[-1]
-    if file_ending == "jpg":
+    if file_ending.lower() == "jpg" or file_ending.lower() == "JPEG":
         file_ending = "jpeg"
     
     return f"image/{file_ending}"

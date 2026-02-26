@@ -2,6 +2,8 @@ import pytest
 import os
 import hashlib
 
+from datetime import datetime
+
 from picture_of_the_day.api import api
 import picture_of_the_day.logic as logic
 import picture_of_the_day.nc_handler as nc_handler
@@ -107,7 +109,7 @@ def test_get_pod_photo_bytes_existing(monkeypatch):
     config.load_core_config(ignore_env=True)
     config.autosave_configs = False
 
-    photo_bytes, mime_type = logic.get_pod_photo_bytes("pod-test-album", "2026-03-07")
+    photo_bytes, mime_type = logic.get_pod_photo_bytes("pod-test-album", "2026-03-07", overlay=False)
     checksum = hashlib.new("sha256", photo_bytes).hexdigest()
     
     assert "ca85488124e60afb8078dc44e9693b934f72c61c21be0714954da2c27409caad" == checksum
@@ -120,6 +122,16 @@ def test_get_pod_photo_bytes_nonexisting(monkeypatch):
     photo_bytes, mime_type = logic.get_pod_photo_bytes("pod-test-album", "0987-06-05")
 
     assert None == photo_bytes
+
+def test_get_photo_exif_creationtime(monkeypatch):
+    monkeypatch.chdir(os.path.join("tests", "configs", "is_admin_initialized_true"))
+    config.load_core_config(ignore_env=True)
+    config.autosave_configs = False
+
+    photo_bytes, mime_type = logic.get_pod_photo_bytes("pod-test-album", "2026-03-07", overlay=False)
+    
+    creationtime = logic.get_photo_exif_creationtime(photo_bytes)
+    assert "07.03.2026" == creationtime.strftime("%d.%m.%Y")
 
 def test_is_album_access_authenticated(monkeypatch):
     monkeypatch.chdir(os.path.join("tests", "configs", "is_admin_initialized_true"))
