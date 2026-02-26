@@ -41,7 +41,7 @@ def test_api_get_pod_photo_bytes(monkeypatch):
     config.load_core_config(ignore_env=True)
     config.autosave_configs = False
 
-    response = client.get("/api/album/pod-test-album/auth_TOOD/photo/2026-03-07")
+    response = client.get("/api/album/pod-test-album/super-duper-secret-token/photo/2026-03-07")
     assert response.status_code == 200
 
     checksum = hashlib.new("sha256", response.content).hexdigest()

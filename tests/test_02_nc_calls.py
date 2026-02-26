@@ -2,6 +2,8 @@ import pytest
 import os
 import hashlib
 
+from fastapi.testclient import TestClient
+
 from picture_of_the_day.api import api
 import picture_of_the_day.logic as logic
 import picture_of_the_day.nc_handler as nc_handler
@@ -50,3 +52,16 @@ def test_nc_get_album_photos():
         digest = hashlib.file_digest(f, "sha256")
 
     assert "744455716ad49d53c2f0037db39f667fc3a60b338df7e6a2569ec3ba47b69dab" == digest.hexdigest()
+
+
+###
+### API calls that require a NC instance connection
+###
+
+client = TestClient(api)
+
+@pytest.mark.skipif(not nc_handler.nc_is_instance_reachable(), reason="NC instance is unavailable")
+def test_api_admin_nc_get_albums():
+    response = client.get("/api/admin/albums")
+    assert response.status_code == 200
+    assert "pod-test-album" in response.json()

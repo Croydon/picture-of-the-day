@@ -10,6 +10,8 @@ from fastapi.staticfiles import StaticFiles
 
 import picture_of_the_day.logic as logic
 import picture_of_the_day.config as config
+import picture_of_the_day.nc_handler as nc_handler
+
 
 def init():
     logic.init()
@@ -23,7 +25,8 @@ def is_admin_initialized():
 
 @api.get("/api/admin/albums")
 def get_albums(request: Request):
-    return {}
+    return nc_handler.nc_get_albums()
+
 
 @api.get("/api/admin/album/{album_id}")
 def get_album(request: Request, album_id: int):
