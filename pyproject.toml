@@ -44,7 +44,7 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "hhttps://github.com/Croydon/picture-of-the-day"
+Homepage = "https://github.com/Croydon/picture-of-the-day"
 #Documentation = "https://readthedocs.org"
 Repository = "https://github.com/Croydon/picture-of-the-day.git"
 "Bug Tracker" = "https://github.com/Croydon/picture-of-the-day/issues"
