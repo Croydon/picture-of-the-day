@@ -37,16 +37,30 @@ def nc_is_instance_reachable(core_config=None, caching=True) -> bool:
         _nc_instance_reachable = False
         return False
 
+def _nc_get_album_path(album_id):
+    if config.config["albums"][album_id]["shared"]:
+        return f"/remote.php/dav/photos/{config.config["core"]["nc_username"]}/sharedalbums/{album_id}/"
+    else:
+        return f"/remote.php/dav/photos/{config.config["core"]["nc_username"]}/albums/{album_id}/"
+
 def nc_get_albums():
-    albums = _client.list(f"/remote.php/dav/photos/{config.config["core"]["nc_username"]}/albums/")
-    sanitized_albums = []
-    for album in albums:
-        if album.endswith("/"):
-            sanitized_albums.append(album.rstrip("/"))
+    def _get_albums(path: str, shared:bool):
+        albums = _client.list(path)
+        tmp_albums = {}
+        for album in albums:
+            if album.endswith("/"):
+                tmp_albums[album.rstrip("/")] = {"shared": shared}
+        return tmp_albums
+
+    owned_albums = _get_albums(f"/remote.php/dav/photos/{config.config["core"]["nc_username"]}/albums/", shared=False)
+    shared_albums = _get_albums(f"/remote.php/dav/photos/{config.config["core"]["nc_username"]}/sharedalbums/", shared=True)
+
+    sanitized_albums = owned_albums | shared_albums
+ 
     return sanitized_albums
 
 def nc_get_album_photos(album_id):
-    photos = _client.list(f"/remote.php/dav/photos/{config.config["core"]["nc_username"]}/albums/{album_id}")
+    photos = _client.list(_nc_get_album_path(album_id))
     return photos
 
 def nc_get_photo(album_id, photo_id):
@@ -54,5 +68,5 @@ def nc_get_photo(album_id, photo_id):
         os.makedirs(f"cache/{album_id}")
     photo_path = f"cache/{album_id}/{photo_id}"
     
-    _client.download_sync(f"/remote.php/dav/photos/{config.config["core"]["nc_username"]}/albums/{album_id}/{photo_id}", photo_path)
+    _client.download_sync(f"{_nc_get_album_path(album_id)}{photo_id}", photo_path)
     return photo_path
