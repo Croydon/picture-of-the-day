@@ -9,7 +9,7 @@ exclude = ["tests*", "config*"]
 
 [project]
 name = "picture-of-the-day"
-version = "0.1.0a1"
+version = "0.2.0a1"
 dependencies = [
   "fastapi>=0.128.2,<1.0.0",
   "uvicorn>=0.41.0,<1.0.0",
