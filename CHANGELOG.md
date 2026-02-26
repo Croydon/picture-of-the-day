@@ -1,13 +1,18 @@
 # Changelog
 
+## v0.4.0a3
+
+  * Overlay: Further adjustments to font size, margins and outline
+
+
 ## v0.4.0a2
 
-  * Make font size and margins bigger
+  * Overlay: Make font size and margins bigger
 
 
 ## v0.4.0a1
 
-  * Print photo creation time on the photo if info available
+  * Overlay: Print photo creation time on the photo if info available
 
 
 ## v0.3.0a2
