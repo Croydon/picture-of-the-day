@@ -44,6 +44,10 @@ def get_pod_set_by(album_id, day):
 def set_pod(album_id, day, photo_id, set_by):
     config.set_pod(album_id, day, photo_id, set_by)
 
+def update_albums():
+    nc_handler.nc_get_albums()
+    # TODO: Implement logic for adding new album to config, removing deleted albums from config (i.e. renaming them with a deleted prefix for now or something), and actually saving the config file again
+
 def update_album_photos(album_id):
     actual_photos = nc_handler.nc_get_album_photos(album_id)
     # print(actual_photos)
