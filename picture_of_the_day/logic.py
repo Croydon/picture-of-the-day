@@ -44,8 +44,8 @@ def write_on_photo_bytes(photo_bytes, text: str, mime_type: str):
     font_path = os.path.join("picture_of_the_day", "ui", "assets", "fonts", "noto_sans", "NotoSans-Variable.ttf")
 
     # Try to scale font size reasonable
-    percentage_of_photo_scale = 0.06
-    min_px = 20
+    percentage_of_photo_scale = 0.07
+    min_px = 30
     font_size = max(min_px, int(min(img.size) * percentage_of_photo_scale))
 
     try:
@@ -59,14 +59,14 @@ def write_on_photo_bytes(photo_bytes, text: str, mime_type: str):
     text_h = bottom - top
 
     # Bottom-left position
-    x = 80
-    y = img.height - text_h - 105
+    x = 120
+    y = img.height - text_h - 140
 
     # Outline around text
-    draw.text((x - 4, y), text, font=font, fill="black")
-    draw.text((x + 4, y), text, font=font, fill="black")
-    draw.text((x, y - 4), text, font=font, fill="black")
-    draw.text((x, y + 4), text, font=font, fill="black")
+    draw.text((x - 5, y), text, font=font, fill="black")
+    draw.text((x + 5, y), text, font=font, fill="black")
+    draw.text((x, y - 5), text, font=font, fill="black")
+    draw.text((x, y + 5), text, font=font, fill="black")
 
     # Text itself
     draw.text((x, y), text, font=font, fill="white")
