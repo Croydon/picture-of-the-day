@@ -102,3 +102,15 @@ def get_photo_bytes(album_id, photo_id) -> [bytes, str]:
         photo_bytes = f.read()
         mime_type = get_photo_mimetype(album_id, photo_id)
     return photo_bytes, mime_type
+
+def is_album_access_authenticated(album_id: str, provided_access_token: str) -> bool:
+    if album_id not in config.config["albums"]:
+        return False
+    
+    if "access_token" not in config.config["albums"][album_id]:
+        return False
+
+    if config.config["albums"][album_id]["access_token"] == provided_access_token:
+        return True
+
+    return False

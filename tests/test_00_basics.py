@@ -120,3 +120,20 @@ def test_get_pod_photo_bytes_nonexisting(monkeypatch):
     photo_bytes, mime_type = logic.get_pod_photo_bytes("pod-test-album", "0987-06-05")
 
     assert None == photo_bytes
+
+def test_is_album_access_authenticated(monkeypatch):
+    monkeypatch.chdir(os.path.join("tests", "configs", "is_admin_initialized_true"))
+    config.load_core_config(ignore_env=True)
+    config.autosave_configs = False 
+
+    is_authenticated_true = logic.is_album_access_authenticated("pod-test-album", "super-duper-secret-token")
+    is_authenticated_false_1 = logic.is_album_access_authenticated("album-not-existing", "super-duper-secret-token")
+    is_authenticated_false_2 = logic.is_album_access_authenticated("pod-test-album", "")
+    is_authenticated_false_3 = logic.is_album_access_authenticated("pod-test-album", "super-duper-secret-toke")
+    is_authenticated_false_4 = logic.is_album_access_authenticated("pod-test-album", "superdupersecrettoken")
+
+    assert True == is_authenticated_true
+    assert False == is_authenticated_false_1
+    assert False == is_authenticated_false_2
+    assert False == is_authenticated_false_3
+    assert False == is_authenticated_false_4

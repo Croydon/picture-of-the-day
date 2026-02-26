@@ -47,3 +47,11 @@ def test_api_get_pod_photo_bytes(monkeypatch):
     checksum = hashlib.new("sha256", response.content).hexdigest()
     
     assert "ca85488124e60afb8078dc44e9693b934f72c61c21be0714954da2c27409caad" == checksum
+
+def test_api_endpoint_calls_unauthenticated(monkeypatch):
+    monkeypatch.chdir(os.path.join("tests", "configs", "is_admin_initialized_true"))
+    config.load_core_config(ignore_env=True)
+    config.autosave_configs = False
+
+    response = client.get("/api/album/pod-test-album/totally-wrong-secrect/photo/2026-03-07")
+    assert response.status_code == 401

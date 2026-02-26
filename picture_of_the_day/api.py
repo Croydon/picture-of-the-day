@@ -19,6 +19,14 @@ def init():
 api = FastAPI(dependencies=[Depends(init)])
 logger = logging.getLogger("picture-of-the-day")
 
+def is_endpoint_authed(album_id: str, provided_access_token: str):
+    return logic.is_album_access_authenticated(album_id, provided_access_token)
+
+def is_admin_authed():
+    # TODO
+    return True
+
+
 @api.get("/api/admin/initialized")
 def is_admin_initialized():
     return {"initialized": config.is_admin_initialized(), "path": os.path.abspath(os.path.join(config.CONFIGDIR, "admin.json"))}
@@ -36,14 +44,25 @@ def get_album(request: Request, album_id: int):
 def set_day(request: Request, album_id: int):
     return {}
 
+
+###
+### Endpoint
+###
+
 @api.get("/api/album/{album_id}/{auth}/photo/today")
 def get_pod(request: Request, album_id: str, auth: str):
+    if not is_endpoint_authed(album_id, auth):
+        return Response(status_code=401)
+
     photo_bytes, mime_type = logic.get_pod_photo_bytes(album_id)
     return Response(photo_bytes, media_type=mime_type)
 
 # api/album/pod-test-album/auth/photo/2026-03-07
 @api.get("/api/album/{album_id}/{auth}/photo/{day}")
 def get_pod(request: Request, album_id: str, auth: str, day: str):
+    if not is_endpoint_authed(album_id, auth):
+        return Response(status_code=401)
+
     photo_bytes, mime_type = logic.get_pod_photo_bytes(album_id, day)
 
     if photo_bytes is None:
