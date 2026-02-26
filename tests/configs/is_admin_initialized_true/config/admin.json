@@ -8,7 +8,8 @@
     },
     "albums": {
         "pod-test-album": {
-            "access_token": "superdupersecrettoken",
+            "access_token": "super-duper-secret-token",
+            "shared": false,
             "pods": {
                 "0888-01-01": {"photo_id": "0.jpg", "set_by": "admin"},
                 "1234-05-06": {"photo_id": "deleted_by_now.jpg", "set_by": "random"},
