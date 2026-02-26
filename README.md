@@ -26,7 +26,7 @@ To install the latest release:
 `pip install picture-of-the-day`
 
 To install from source:  
-`pip install .
+`pip install .`
 
 
 ## Developing & Testing

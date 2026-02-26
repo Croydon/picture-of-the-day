@@ -111,6 +111,11 @@ def get_unused_photos(album_id):
         used_photos.add(config["albums"][album_id]["pods"][pod_day]["photo_id"])
     return [photo for photo in config["albums"][album_id]["photos"] if photo not in used_photos]
 
+def save_albums(albums: list):
+    for album in albums:
+        album_id = album["album_id"]
+        config["albums"].setdefault(album_id, {})["shared"] = album["shared"]
+
 # def unset_pod(album_id, day)
 # def get_random_photo_for_day(album_id)
 # def set_random_photos_for_next_x_days(album_id, days=31, reset_existing=False)
