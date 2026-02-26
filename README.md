@@ -40,6 +40,11 @@ Run tests:
 `pytest -v`
 
 
+## Run
+
+`picture-of-the-day run`
+
+
 ## License
 
 This project is licensed under the terms of the [MIT license](LICENSE).
