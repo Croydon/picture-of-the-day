@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.4.0a4
+
+  * Overlay
+    * Make configurable on a per-album basis
+    * Try to predict cropping for target screen and position overlay accordingly so that it is still visible
+    * Improve outline
+
+
 ## v0.4.0a3
 
   * Overlay: Further adjustments to font size, margins and outline
