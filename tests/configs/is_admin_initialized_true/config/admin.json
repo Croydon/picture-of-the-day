@@ -11,12 +11,7 @@
             "access_token": "super-duper-secret-token",
             "shared": false,
             "overlay": {
-                "status": true,
-                "adjust_for_final_screen": true,
-                "final_screen": {
-                    "width": 800,
-                    "height": 400
-                }    
+                "status": false
             },
             "pods": {
                 "0888-01-01": {"photo_id": "0.jpg", "set_by": "admin"},

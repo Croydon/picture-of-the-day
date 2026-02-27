@@ -69,8 +69,8 @@ def write_on_photo_bytes(photo_bytes, text: str, mime_type: str, overlay_conf: d
         crop_y = max(0.0, (img_h - visible_src_h) / 2.0)  
 
         # Use the "safe" bottom-left inside the visible area, not the real corner
-        safe_left = crop_x + 120
-        safe_bottom = img_h - crop_y - 140
+        safe_left = crop_x + 20
+        safe_bottom = img_h - crop_y - 25
 
         # Measure textbox
         left, top, right, bottom = draw.textbbox((0, 0), text, font=font)
@@ -82,15 +82,16 @@ def write_on_photo_bytes(photo_bytes, text: str, mime_type: str, overlay_conf: d
         y = (safe_bottom - text_h) - top
     else:
         # Bottom-left position
-        x = 120
-        y = img.height - text_h - 140
+        x = 20
+        y = img.height - text_h - 25
 
     # Outline around text
-    outline = 5
-    draw.text((x - outline, y), text, font=font, fill="black")
-    draw.text((x + outline, y), text, font=font, fill="black")
-    draw.text((x, y - outline), text, font=font, fill="black")
-    draw.text((x, y + outline), text, font=font, fill="black")
+    outline = max(1, font_size // 15) 
+    for dx, dy in (
+        (-outline, 0), (outline, 0), (0, -outline), (0, outline),
+        (-outline, -outline), (-outline, outline), (outline, -outline), (outline, outline),
+    ):
+        draw.text((x + dx, y + dy), text, font=font, fill="black")
 
     # Text itself
     draw.text((x, y), text, font=font, fill="white")
@@ -110,7 +111,7 @@ def get_pod_photo_bytes(album_id, day=None, overlay=True) -> [bytes, str]:
     if photoid is not None:
         photo_bytes, mime_type = get_photo_bytes(album_id, photoid)
         overlay_conf = config.get_overlay_config(album_id)
-        if overlay or overlay_conf["status"]:
+        if overlay or overlay_conf["status"] == True:
             photo_creationtime = get_photo_exif_creationtime(photo_bytes)
             print(photo_creationtime)
             if photo_creationtime is not None:

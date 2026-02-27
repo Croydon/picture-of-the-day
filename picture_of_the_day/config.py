@@ -119,12 +119,14 @@ def save_albums(albums: list):
         config["albums"].setdefault(album_id, {})["shared"] = album["shared"]
 
 def get_overlay_config(album_id):
+    overlay_conf = config["albums"][album_id].get("overlay", {})
+    final_screen = overlay_conf.get("final_screen", {})
     return {
-        "status": config["albums"].get("status", True),
-        "adjust_for_final_screen": config["albums"].get("adjust_for_final_screen", True),
+        "status": overlay_conf.get("status", True),
+        "adjust_for_final_screen": overlay_conf.get("adjust_for_final_screen", True),
         "final_screen": {
-            "width": config["albums"].get("final_screen", {}).get("width", 800),
-            "height": config["albums"].get("final_screen", {}).get("height", 800),
+            "width": final_screen.get("width", 800),
+            "height": final_screen.get("height", 400),
         }
     }
 # def unset_pod(album_id, day)
