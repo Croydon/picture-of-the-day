@@ -34,7 +34,7 @@ def get_pod_photoid(album_id, day=None):
         
     return config.config["albums"][album_id]["pods"][day]["photo_id"]
 
-def write_on_photo_bytes(photo_bytes, text: str, mime_type: str):
+def write_on_photo_bytes(photo_bytes, text: str, mime_type: str, overlay_conf: dict):
     fh = io.BytesIO(photo_bytes)
     fh.seek(0)
 
@@ -53,20 +53,44 @@ def write_on_photo_bytes(photo_bytes, text: str, mime_type: str):
     except OSError:
         font = ImageFont.load_default(font_size)
 
-    # Measure text
-    left, top, right, bottom = draw.textbbox((0, 0), text, font=font)
-    text_w = right - left
-    text_h = bottom - top
+    img_w, img_h = img.size
+    display_w = overlay_conf["final_screen"]["width"]
+    display_h = overlay_conf["final_screen"]["height"]
 
-    # Bottom-left position
-    x = 120
-    y = img.height - text_h - 140
+    if overlay_conf["adjust_for_final_screen"]:
+        # Estimate crop in source-image coordinates for cover-like method on display_w x display_h
+        scale = max(display_w / img_w, display_h / img_h)
+        visible_src_w = display_w / scale
+        visible_src_h = display_h / scale
+
+        # estimated crop from left and right (each)
+        crop_x = max(0.0, (img_w - visible_src_w) / 2.0)
+        # estimated crop from top and bottom (each)
+        crop_y = max(0.0, (img_h - visible_src_h) / 2.0)  
+
+        # Use the "safe" bottom-left inside the visible area, not the real corner
+        safe_left = crop_x + 120
+        safe_bottom = img_h - crop_y - 140
+
+        # Measure textbox
+        left, top, right, bottom = draw.textbbox((0, 0), text, font=font)
+        text_w = right - left
+        text_h = bottom - top
+
+        # Position at bottom-left, but adjusted, so that it hopefully survivs cropping
+        x = safe_left - left
+        y = (safe_bottom - text_h) - top
+    else:
+        # Bottom-left position
+        x = 120
+        y = img.height - text_h - 140
 
     # Outline around text
-    draw.text((x - 5, y), text, font=font, fill="black")
-    draw.text((x + 5, y), text, font=font, fill="black")
-    draw.text((x, y - 5), text, font=font, fill="black")
-    draw.text((x, y + 5), text, font=font, fill="black")
+    outline = 5
+    draw.text((x - outline, y), text, font=font, fill="black")
+    draw.text((x + outline, y), text, font=font, fill="black")
+    draw.text((x, y - outline), text, font=font, fill="black")
+    draw.text((x, y + outline), text, font=font, fill="black")
 
     # Text itself
     draw.text((x, y), text, font=font, fill="white")
@@ -85,11 +109,12 @@ def get_pod_photo_bytes(album_id, day=None, overlay=True) -> [bytes, str]:
     photoid = get_pod_photoid(album_id, day)
     if photoid is not None:
         photo_bytes, mime_type = get_photo_bytes(album_id, photoid)
-        if overlay:
+        overlay_conf = config.get_overlay_config(album_id)
+        if overlay or overlay_conf["status"]:
             photo_creationtime = get_photo_exif_creationtime(photo_bytes)
             print(photo_creationtime)
             if photo_creationtime is not None:
-                photo_bytes = write_on_photo_bytes(photo_bytes, photo_creationtime.strftime("%d.%m.%Y"), mime_type)
+                photo_bytes = write_on_photo_bytes(photo_bytes, photo_creationtime.strftime("%d.%m.%Y"), mime_type, overlay_conf)
         return photo_bytes, mime_type
     return None, None
 

@@ -118,6 +118,15 @@ def save_albums(albums: list):
         album_id = album["album_id"]
         config["albums"].setdefault(album_id, {})["shared"] = album["shared"]
 
+def get_overlay_config(album_id):
+    return {
+        "status": config["albums"].get("status", True),
+        "adjust_for_final_screen": config["albums"].get("adjust_for_final_screen", True),
+        "final_screen": {
+            "width": config["albums"].get("final_screen", {}).get("width", 800),
+            "height": config["albums"].get("final_screen", {}).get("height", 800),
+        }
+    }
 # def unset_pod(album_id, day)
 # def get_random_photo_for_day(album_id)
 # def set_random_photos_for_next_x_days(album_id, days=31, reset_existing=False)
