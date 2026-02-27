@@ -69,8 +69,8 @@ def write_on_photo_bytes(photo_bytes, text: str, mime_type: str, overlay_conf: d
         crop_y = max(0.0, (img_h - visible_src_h) / 2.0)  
 
         # Use the "safe" bottom-left inside the visible area, not the real corner
-        safe_left = crop_x + 20
-        safe_bottom = img_h - crop_y - 25
+        safe_left = crop_x + 40
+        safe_bottom = img_h - crop_y - 10
 
         # Measure textbox
         left, top, right, bottom = draw.textbbox((0, 0), text, font=font)
@@ -82,8 +82,8 @@ def write_on_photo_bytes(photo_bytes, text: str, mime_type: str, overlay_conf: d
         y = (safe_bottom - text_h) - top
     else:
         # Bottom-left position
-        x = 20
-        y = img.height - text_h - 25
+        x = 40
+        y = img.height - text_h - 15
 
     # Outline around text
     outline = max(1, font_size // 15) 
