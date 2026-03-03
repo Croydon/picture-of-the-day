@@ -28,9 +28,8 @@ def get_pod_photoid(album_id, day=None):
             # Random pre-generation of PODs should happen explicit elsewhere
             return None
         random_photoid = get_random_photoid(album_id)
+        set_pod(album_id, day, random_photoid, "random")
         return random_photoid
-        # TODO: Save it actually later on
-        # set_pod(album_id, day, random_photoid, "random")
         
     return config.config["albums"][album_id]["pods"][day]["photo_id"]
 
