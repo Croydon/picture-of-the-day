@@ -64,8 +64,12 @@ def write_on_photo_bytes(photo_bytes, text: str, mime_type: str, overlay_conf: d
         # estimated crops from both directions 
         scaled_w = round(img_w * scale)
         scaled_h = round(img_h * scale)
-        crop_x = round((scaled_w - display_w) / 2) / scale
-        crop_y = round((scaled_h - display_h) / 2) / scale
+
+        # Negativ crop = the picture is smaller in at least one dimension then the target display
+        # We need to prevent having a negative value here
+        # As otherwise the text will be (partially) placed outside of the returned picture
+        crop_x = max(0.0, round((scaled_w - display_w) / 2) / scale)
+        crop_y = max(0.0, round((scaled_h - display_h) / 2) / scale)
 
         # Use the "safe" bottom-left inside the visible area, not the real corner
         safe_left = crop_x + outline + 20
@@ -78,8 +82,8 @@ def write_on_photo_bytes(photo_bytes, text: str, mime_type: str, overlay_conf: d
 
         # Position at bottom-left, but adjusted, so that it hopefully survivs cropping
         x = safe_left - left
-        # y = (safe_bottom - text_h) - top
-        y = safe_bottom - top
+        y = (safe_bottom - text_h) - top
+        # y = safe_bottom - top
     else:
         # Bottom-left position
         x = outline + 20
