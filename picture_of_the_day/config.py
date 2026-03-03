@@ -4,6 +4,8 @@ import os
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
+MEDIADIR = os.path.join("media", "picture-of-the-day")
+CACHEDIR = os.path.join(MEDIADIR, "cache")
 CONFIGDIR = os.environ.get("POD_CONFIG_DIR", os.path.join("config"))
 autosave_configs = True
 

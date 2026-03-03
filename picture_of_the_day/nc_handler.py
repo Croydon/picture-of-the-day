@@ -64,9 +64,10 @@ def nc_get_album_photos(album_id):
     return photos
 
 def nc_get_photo(album_id, photo_id):
-    if not os.path.exists(f"cache/{album_id}"):
-        os.makedirs(f"cache/{album_id}")
-    photo_path = f"cache/{album_id}/{photo_id}"
+    cache_album = os.path.join(config.CACHEDIR, album_id)
+    if not os.path.exists(cache_album):
+        os.makedirs(cache_album)
+    photo_path = os.path.join(cache_album, photo_id)
     
     _client.download_sync(f"{_nc_get_album_path(album_id)}{photo_id}", photo_path)
     return photo_path

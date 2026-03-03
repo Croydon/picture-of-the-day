@@ -179,7 +179,7 @@ def get_random_photoid(album_id) -> str:
         return random.choice(all_photos)
 
 def get_local_photo_path(album_id, photo_id):
-    return f"cache/{album_id}/{photo_id}"
+    return os.path.join(config.CACHEDIR, album_id, photo_id)
 
 def _parse_exif_times(exif_time: str):
     exif_time = exif_time.strip()
