@@ -68,12 +68,12 @@ def write_on_photo_bytes(photo_bytes, text: str, mime_type: str, overlay_conf: d
         # Negativ crop = the picture is smaller in at least one dimension then the target display
         # We need to prevent having a negative value here
         # As otherwise the text will be (partially) placed outside of the returned picture
-        crop_x = max(0.0, round((scaled_w - display_w) / 2) / scale)
-        crop_y = max(0.0, round((scaled_h - display_h) / 2) / scale)
+        crop_x = max(0, round((scaled_w - display_w) / 2) / scale)
+        crop_y = max(0, round((scaled_h - display_h) / 2) / scale)
 
         # Use the "safe" bottom-left inside the visible area, not the real corner
         safe_left = crop_x + outline + 20
-        safe_bottom = img_h - crop_y - outline - 8
+        safe_bottom = min(img_h, img_h - crop_y - outline - 15)
 
         # Measure textbox
         left, top, right, bottom = draw.textbbox((0, 0), text, font=font)
@@ -82,12 +82,12 @@ def write_on_photo_bytes(photo_bytes, text: str, mime_type: str, overlay_conf: d
 
         # Position at bottom-left, but adjusted, so that it hopefully survivs cropping
         x = safe_left - left
-        y = (safe_bottom - text_h) - top
-        # y = safe_bottom - top
+        # y = (safe_bottom - text_h) - top
+        y = safe_bottom - text_h
     else:
         # Bottom-left position
         x = outline + 20
-        y = img_h - text_h - outline - 8
+        y = img_h - text_h - outline - 15
 
     # Outline around text
     for dx, dy in (
