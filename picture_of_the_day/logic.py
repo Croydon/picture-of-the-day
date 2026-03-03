@@ -79,7 +79,8 @@ def write_on_photo_bytes(photo_bytes, text: str, mime_type: str, overlay_conf: d
 
         # Position at bottom-left, but adjusted, so that it hopefully survivs cropping
         x = safe_left - left
-        y = (safe_bottom - text_h) - top
+        # y = (safe_bottom - text_h) - top
+        y = safe_bottom - top
     else:
         # Bottom-left position
         x = outline + 20
