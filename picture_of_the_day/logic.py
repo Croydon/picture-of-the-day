@@ -60,13 +60,12 @@ def write_on_photo_bytes(photo_bytes, text: str, mime_type: str, overlay_conf: d
     if overlay_conf["adjust_for_final_screen"]:
         # Estimate crop in source-image coordinates for cover-like method on display_w x display_h
         scale = max(display_w / img_w, display_h / img_h)
-        visible_src_w = display_w / scale
-        visible_src_h = display_h / scale
 
-        # estimated crop from left and right (each)
-        crop_x = max(0.0, (img_w - visible_src_w) / 2.0)
-        # estimated crop from top and bottom (each)
-        crop_y = max(0.0, (img_h - visible_src_h) / 2.0)  
+        # estimated crops from both directions 
+        scaled_w = round(img_w * scale)
+        scaled_h = round(img_h * scale)
+        crop_x = round((scaled_w - display_w) / 2) / scale
+        crop_y = round((scaled_h - display_h) / 2) / scale
 
         # Use the "safe" bottom-left inside the visible area, not the real corner
         safe_left = crop_x + outline + 20
