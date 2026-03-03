@@ -5,7 +5,6 @@
     // "features": {},
     // Use 'forwardPorts' to make a list of ports inside the container available locally.
     "forwardPorts": [8948],
-    // Use 'postCreateCommand' to run commands after the container is created.
     "postCreateCommand": "pip install -U pip && pip install -U -e .[dev,tests]",
     // Configure tool-specific properties.
     // "customizations": {},
