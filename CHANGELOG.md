@@ -1,5 +1,16 @@
 # Changelog
 
+## v0.4.0a6
+
+  * Make random POD permanent for the respective day
+  * Add API endpoint for random photo
+
+
+## v0.4.0a5
+
+  * Overlay: Improve position calculation
+
+
 ## v0.4.0a4
 
   * Overlay
