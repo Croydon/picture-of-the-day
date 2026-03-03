@@ -104,6 +104,14 @@ def write_on_photo_bytes(photo_bytes, text: str, mime_type: str, overlay_conf: d
     img.save(out, **save_options)
     return out.getvalue()
 
+def write_overlay(album_id, photo_bytes, mime_type) -> bytes:
+    overlay_conf = config.get_overlay_config(album_id)
+    photo_creationtime = get_photo_exif_creationtime(photo_bytes)
+    print(photo_creationtime)
+    if photo_creationtime is not None:
+        photo_bytes = write_on_photo_bytes(photo_bytes, photo_creationtime.strftime("%d.%m.%Y"), mime_type, overlay_conf)
+    return photo_bytes
+
 def get_pod_photo_bytes(album_id, day=None, overlay=True) -> [bytes, str]:
     if day is None:
         day = config.get_current_day()
@@ -112,12 +120,17 @@ def get_pod_photo_bytes(album_id, day=None, overlay=True) -> [bytes, str]:
         photo_bytes, mime_type = get_photo_bytes(album_id, photoid)
         overlay_conf = config.get_overlay_config(album_id)
         if overlay or overlay_conf["status"] == True:
-            photo_creationtime = get_photo_exif_creationtime(photo_bytes)
-            print(photo_creationtime)
-            if photo_creationtime is not None:
-                photo_bytes = write_on_photo_bytes(photo_bytes, photo_creationtime.strftime("%d.%m.%Y"), mime_type, overlay_conf)
+            photo_bytes = write_overlay(album_id, photo_bytes, mime_type)
         return photo_bytes, mime_type
     return None, None
+
+def get_random_photo_bytes(album_id, overlay=True) -> [bytes, str]:
+    photoid = get_random_photoid(album_id)
+    photo_bytes, mime_type = get_photo_bytes(album_id, photoid)
+    overlay_conf = config.get_overlay_config(album_id)
+    if overlay or overlay_conf["status"] == True:
+        photo_bytes = write_overlay(album_id, photo_bytes, mime_type)
+    return photo_bytes, mime_type
 
 def get_pod_set_by(album_id, day):
     if day in config.config["albums"][album_id]["pods"]:

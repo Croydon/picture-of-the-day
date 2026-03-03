@@ -57,6 +57,14 @@ def get_pod(request: Request, album_id: str, auth: str):
     photo_bytes, mime_type = logic.get_pod_photo_bytes(album_id)
     return Response(photo_bytes, media_type=mime_type)
 
+@api.get("/api/album/{album_id}/{auth}/photo/random")
+def get_pod(request: Request, album_id: str, auth: str):
+    if not is_endpoint_authed(album_id, auth):
+        return Response(status_code=401)
+
+    photo_bytes, mime_type = logic.get_random_photo_bytes(album_id)
+    return Response(photo_bytes, media_type=mime_type)
+
 # api/album/pod-test-album/auth/photo/2026-03-07
 @api.get("/api/album/{album_id}/{auth}/photo/{day}")
 def get_pod(request: Request, album_id: str, auth: str, day: str):
