@@ -47,6 +47,7 @@ def write_on_photo_bytes(photo_bytes, text: str, mime_type: str, overlay_conf: d
     percentage_of_photo_scale = 0.07
     min_px = 30
     font_size = max(min_px, int(min(img.size) * percentage_of_photo_scale))
+    outline = max(1, font_size // 15) 
 
     try:
         font = ImageFont.truetype(font_path, font_size)
@@ -69,8 +70,8 @@ def write_on_photo_bytes(photo_bytes, text: str, mime_type: str, overlay_conf: d
         crop_y = max(0.0, (img_h - visible_src_h) / 2.0)  
 
         # Use the "safe" bottom-left inside the visible area, not the real corner
-        safe_left = crop_x + 40
-        safe_bottom = img_h - crop_y - 10
+        safe_left = crop_x + outline + 20
+        safe_bottom = img_h - crop_y - outline - 15
 
         # Measure textbox
         left, top, right, bottom = draw.textbbox((0, 0), text, font=font)
@@ -86,7 +87,6 @@ def write_on_photo_bytes(photo_bytes, text: str, mime_type: str, overlay_conf: d
         y = img.height - text_h - 15
 
     # Outline around text
-    outline = max(1, font_size // 15) 
     for dx, dy in (
         (-outline, 0), (outline, 0), (0, -outline), (0, outline),
         (-outline, -outline), (-outline, outline), (outline, -outline), (outline, outline),
