@@ -1,5 +1,13 @@
 # Changelog
 
+
+## v0.5.0
+
+  * Overlay: Further improve position calculation
+  * Publish `:dev` tagged containers on git pushes to the `main` and `dev` branches
+  * Change caching directory to `media/picture-of-the-day/cache/` for improved path mappings (i.e. for my Home Assistant app)
+
+
 ## v0.4.0a6
 
   * Make random POD permanent for the respective day
