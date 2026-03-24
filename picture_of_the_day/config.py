@@ -51,7 +51,7 @@ def save_config():
         json.dump(config, f, indent=4)
 
 
-def _get_timezone_config():
+def get_timezone_config():
     if "timezone" in config["core"]:
         return config["core"]["timezone"]
     else:
@@ -59,7 +59,7 @@ def _get_timezone_config():
 
 
 def get_current_day():
-    now = datetime.now(ZoneInfo(_get_timezone_config()))
+    now = datetime.now(ZoneInfo(get_timezone_config()))
     return now.strftime("%Y-%m-%d")
 
 
@@ -104,6 +104,10 @@ def set_pod(album_id, day, photo_id, set_by):
     config["albums"][album_id]["pods"][day] = {"photo_id": photo_id, "set_by": set_by}
 
     save_config()
+
+
+def get_albums() -> list:
+    return config["albums"].keys()
 
 
 def get_album_photos(album_id):

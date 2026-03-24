@@ -2,6 +2,7 @@ import argparse
 import logging
 
 from picture_of_the_day.api import run_server
+from picture_of_the_day import cron
 
 logger = logging.getLogger("picture-of-the-day")
 logger.setLevel(logging.INFO)
@@ -16,5 +17,5 @@ def main():
     args = parser.parse_args()
 
     if args.command == "run":
-
+        cron.init_jobs()
         run_server(args)
