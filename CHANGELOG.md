@@ -1,6 +1,12 @@
 # Changelog
 
 
+## v0.6.0
+
+  * Implement Cronjob to pre-cache PODS
+    * This makes the first call of each POD faster, allowing photo frames to go back to deep sleep faster and therefore helping with battery life
+
+
 ## v0.5.0
 
   * Overlay: Further improve position calculation
