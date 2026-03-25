@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.6.1
+
+  * Fix: Installing missing timezone dependency for `schedule`
+
 
 ## v0.6.0
 
